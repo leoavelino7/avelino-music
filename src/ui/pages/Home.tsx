@@ -6,10 +6,20 @@ import AudioPlayer, { AudioPlayerProps } from '../components/AudioPlayer'
 import SignInForm from '../components/SignInForm'
 import SearchForm from '../components/SearchForm'
 import ToogleTheme from '../components/ToggleTheme'
+import TitleHeader from '../components/TitleHeader'
 
 // Icons
 import SearchIcon from '../components/icons/SearchIcon'
 import MusicIcon from '../components/icons/MusicIcon'
+
+// Enum
+enum STATUS_TITLE {
+  WELCOME = 'Seja bem vindo ao Avelino Music. Entre com seu Spotify para poder montar a sua playlist favorita',
+  SEARCHING_FOR = 'Buscando resultados para:',
+  RESULT_FOR = 'Resultados para:',
+  NOT_FOUND_RESULT_FOR = 'Não encontramos nada por:',
+  TOP_TEN = 'TOP 10:'
+}
 
 // Others
 const minCharsQuery = 3
@@ -30,11 +40,14 @@ const menuItems = [
 ]
 
 const Home: React.FC = () => {
+  // States
   const [selectedAudio] = useState<AudioPlayerProps>()
   const [signed] = useState(true)
   const [isOpenTopTracks] = useState(false)
   const [queryApproved] = useState(true)
+  const [titleSearch] = useState('Busque por seus principais artistas e músicas')
 
+  // Functions
   const signWithSpotify = (): void => {
     console.log('login')
   }
@@ -74,6 +87,11 @@ const Home: React.FC = () => {
 
                 <div className="flex flex-row justify-center">
                   <ToogleTheme />
+                </div>
+              </section>
+              <section>
+                <div className="flex flex-row justify-between items-center">
+                  <TitleHeader title={titleSearch} description="" />
                 </div>
               </section>
             </>
