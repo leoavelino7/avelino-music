@@ -1,4 +1,21 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+
+// Context
+import { SpotifySearchResponseContext } from '../../data/contexts/SpotifySearchResponseContext'
+import { TopTracksContext } from '../../data/contexts/TopTracksContext'
+import { PlaylistContext } from '../../data/contexts/PlaylistContext'
+
+// Hooks
+import { useAuth } from '../../data/hooks/useAuth'
+
+// Actions
+import { Actions as spotifySearchResponseActions } from '../../data/reducers/spotifySearchResponseReducer'
+import { Actions as topTracksActions, Track } from '../../data/reducers/topTracksReducer'
+import { Actions as playlistReducerActions } from '../../data/reducers/playlistReducer'
+
+// Clients
+import { searchAll, getTopTracks } from '../../data/clients/SpotifyClient'
+import { TrackObject } from '../../data/clients/types/Spotify'
 
 // Components
 import Navigation from '../components/Navigation'
@@ -21,6 +38,24 @@ enum STATUS_TITLE {
   TOP_TEN = 'TOP 10:'
 }
 
+// Functions
+const getTreatedTracks = (tracks: TrackObject[], playlistTracks: Track[]): Track[] => {
+  const treatedTracks = tracks.map(track => {
+    const [artist] = track.artists
+    return {
+      id: track.id,
+      musicName: track.name,
+      artistId: artist.id,
+      artistName: artist.name,
+      image: track.album.images.length > 0 ? track.album.images[0].url : '/images/default-photo-for-cards.jpg',
+      audioPreview: track.preview_url || '',
+      favorited: playlistTracks.some(trackFavorited => trackFavorited.id === track.id)
+    }
+  })
+
+  return treatedTracks
+}
+
 // Others
 const minCharsQuery = 3
 
@@ -40,20 +75,56 @@ const menuItems = [
 ]
 
 const Home: React.FC = () => {
+  // Context
+  const [spotifySearchState, spotifySearchDispatch] = useContext(SpotifySearchResponseContext)
+  const [topTracksState, topTracksDispatch] = useContext(TopTracksContext)
+  const [playlistState, playlistDispatch] = useContext(PlaylistContext)
+
+  // Hooks
+  const [, signed, signWithSpotify] = useAuth()
+
   // States
   const [selectedAudio] = useState<AudioPlayerProps>()
-  const [signed] = useState(true)
   const [isOpenTopTracks] = useState(false)
-  const [queryApproved] = useState(true)
+  const [queryApproved, setQueryApproved] = useState(true)
   const [titleSearch] = useState('Busque por seus principais artistas e músicas')
 
   // Functions
-  const signWithSpotify = (): void => {
-    console.log('login')
-  }
 
-  const handleSearch = (): void => {
-    console.log('handle search')
+  const handleSearch = (query = '', offset: number = spotifySearchState.offset, limit: number = spotifySearchState.limit): void => {
+    const isApproved = query.trim().length > minCharsQuery
+
+    setQueryApproved(isApproved)
+
+    if (isApproved) {
+      spotifySearchDispatch({
+        type: spotifySearchResponseActions.LOADING,
+        payload: {
+          query
+        }
+      })
+
+      searchAll(query, offset, limit)
+        .then(response => {
+          const treatedTracks = getTreatedTracks(response.tracks.items, playlistState.tracks)
+
+          spotifySearchDispatch({
+            type: spotifySearchResponseActions.SUCCESS,
+            payload: {
+              tracks: treatedTracks,
+              lastResponse: response
+            }
+          })
+        })
+        .catch((err: Error) => {
+          spotifySearchDispatch({
+            type: spotifySearchResponseActions.ERROR,
+            payload: {
+              error: err?.message
+            }
+          })
+        })
+    }
   }
 
   return (
