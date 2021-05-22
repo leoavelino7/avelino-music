@@ -46,6 +46,8 @@
     "react/prop-types": "off",
     "comma-dangle": "off",
     "semi": ["error", "never"],
-    "react/jsx-one-expression-per-line": "off"
+    "react/jsx-one-expression-per-line": "off",
+    "global-require": "off",
+    "import/no-extraneous-dependencies": "off"
   }
 }
