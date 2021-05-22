@@ -5,6 +5,7 @@ import Navigation from '../components/Navigation'
 import AudioPlayer, { AudioPlayerProps } from '../components/AudioPlayer'
 import SignInForm from '../components/SignInForm'
 import SearchForm from '../components/SearchForm'
+import ToogleTheme from '../components/ToggleTheme'
 
 // Icons
 import SearchIcon from '../components/icons/SearchIcon'
@@ -69,6 +70,10 @@ const Home: React.FC = () => {
                       <p>Por favor, escreva ao menos {minCharsQuery} caracteres para realizar uma busca</p>
                     </div>
                   )}
+                </div>
+
+                <div className="flex flex-row justify-center">
+                  <ToogleTheme />
                 </div>
               </section>
             </>
