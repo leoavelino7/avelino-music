@@ -114,7 +114,7 @@ const Home: React.FC = () => {
 
   // States
   const [selectedAudio, setSelectedAudio] = useState<AudioPlayerProps>()
-  const [isOpenTopTracks] = useState(false)
+  const [isOpenTopTracks, setIsOpenTopTracks] = useState(false)
   const [queryApproved, setQueryApproved] = useState(true)
   const [titleSearch, setTitleSearch] = useState(STATUS_TITLE.SEARCH_FOR)
   const [resultList, setResultList] = useState<Item[]>([])
@@ -156,8 +156,41 @@ const Home: React.FC = () => {
     }
   }
 
-  const handleSelect = (): void => {
-    console.log('handleSelect')
+  const handleSelect = (card: Item): void => {
+    const trackFound = spotifySearchState.tracks.find(trackItem => trackItem.id === card.id)
+
+    if (trackFound?.artistId) {
+      topTracksDispatch({
+        type: topTracksActions.LOADING,
+        payload: {
+          artistId: trackFound?.artistId,
+          artistName: trackFound.artistName
+        }
+      })
+
+      getTopTracks({
+        id: trackFound.artistId,
+        market: 'from_token'
+      })
+        .then(response => {
+          const topTracks = getTreatedTracks(response.tracks, playlistState.tracks)
+
+          topTracksDispatch({
+            type: topTracksActions.SUCCESS,
+            payload: {
+              tracks: topTracks
+            }
+          })
+        })
+        .catch(err => {
+          topTracksDispatch({
+            type: topTracksActions.ERROR,
+            payload: {
+              error: err?.message
+            }
+          })
+        })
+    }
   }
 
   const handlePlayPreview = (card: Item): void => {
@@ -228,6 +261,11 @@ const Home: React.FC = () => {
     setResultList(newResultList)
   }
 
+  const handleCloseTopTracks = (): void => {
+    setIsOpenTopTracks(false)
+    setTitleSearch(STATUS_TITLE.RESULT_FOR)
+  }
+
   // Effects
   useEffect(() => {
     if (spotifySearchState.loading) {
@@ -240,6 +278,17 @@ const Home: React.FC = () => {
       setTitleSearch(STATUS_TITLE.NOT_FOUND_RESULT_FOR)
     }
   }, [spotifySearchState.loading, spotifySearchState.success, spotifySearchState.error, spotifySearchState.tracks, playlistState.tracks])
+
+  useEffect(() => {
+    if (topTracksState.loading) {
+      setTitleSearch(STATUS_TITLE.RESULT_FOR)
+    } else if (topTracksState.success) {
+      setTitleSearch(STATUS_TITLE.TOP_TEN)
+      setIsOpenTopTracks(true)
+    } else if (topTracksState.error) {
+      setTitleSearch(STATUS_TITLE.NOT_FOUND_RESULT_FOR)
+    }
+  }, [topTracksState.loading, topTracksState.success, topTracksState.error])
 
   return (
     <div className="flex flex-col h-screen justify-between">
@@ -276,19 +325,45 @@ const Home: React.FC = () => {
               </section>
               <section>
                 <div className="flex flex-row justify-between items-center">
-                  <TitleHeader title={titleSearch} description="" />
+                  <TitleHeader title={titleSearch} description={spotifySearchState.query} />
+                  {isOpenTopTracks && (
+                    <button
+                      type="button"
+                      onClick={handleCloseTopTracks}
+                      className={`
+                      bg-gray-500 hover:bg-gray-600 text-white text-sm font-bold py-2 px-4 border-b-4 border-gray-700 hover:border-gray-500 
+                      rounded mr-5 transition duration-300 ease-out`}
+                    >
+                      Fechar
+                    </button>
+                  )}
                 </div>
-                <ListCards
-                  listId="result-list"
-                  cards={resultList}
-                  actions={{
-                    onHandleClick: handleSelect,
-                    onHandleClickLeftIcon: handlePlayPreview,
-                    onHandleClickRightIcon: toggleFavorite
-                  }}
-                  onDragEnd={onDragEnd}
-                  isDragDisabled={false}
-                />
+                {topTracksState.tracks?.length > 0 && isOpenTopTracks ? (
+                  <ListCards
+                    listId="top-tracks-list"
+                    cards={convertTrackToCardType(topTracksState.tracks, playlistState.tracks)}
+                    actions={{
+                      onHandleClick: handlePlayPreview,
+                      onHandleClickLeftIcon: handlePlayPreview,
+                      onHandleClickRightIcon: toggleFavorite
+                    }}
+                    isDragDisabled
+                  />
+                ) : (
+                  <>
+                    <ListCards
+                      listId="result-list"
+                      cards={resultList}
+                      actions={{
+                        onHandleClick: handleSelect,
+                        onHandleClickLeftIcon: handlePlayPreview,
+                        onHandleClickRightIcon: toggleFavorite
+                      }}
+                      onDragEnd={onDragEnd}
+                      isDragDisabled={false}
+                    />
+                  </>
+                )}
               </section>
             </>
           )}
