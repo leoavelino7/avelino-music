@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 
+import AvelinoMusicLogo from './AvelinoMusicLogo'
+
 interface MenuItem {
   id: string
   text: string
@@ -8,20 +10,13 @@ interface MenuItem {
 }
 
 interface NavigationProps {
-  title: string
   menuItems: MenuItem[]
   path: string
 }
 
-const Navigation: React.FC<NavigationProps> = ({ title, menuItems, path }) => (
+const Navigation: React.FC<NavigationProps> = ({ menuItems, path }) => (
   <nav className="lg:max-w-xs lg:w-full lg:absolute">
-    <h3
-      className={`
-        hidden lg:block p-2 text-green-700 dark:text-green-400 my-8 mx-auto text-center font-sans font-medium tracking-tight text-2xl
-      `}
-    >
-      {title}
-    </h3>
+    <AvelinoMusicLogo onClasses={{ className: 'hidden lg:flex' }} />
     <ul className="flex justify-around lg:flex-col p-3 border-t-2 border-gray-200 border-opacity-5">
       {menuItems.map(menuItem => (
         <li key={menuItem.id} className="rounded-md lg:mb-1">

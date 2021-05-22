@@ -152,7 +152,7 @@ const Playlist: React.FC = () => {
     <div className="flex flex-col h-screen justify-between">
       <div className="grid grid-rows-3 grid-cols-12 flex-grow">
         <header className="col-span-2 lg:col-span-3 xl:col-span-2 row-span-3 hidden lg:flex relative  bg-gray-50 dark:bg-black">
-          <Navigation title="Avelino Music" menuItems={menuItems} path={path} />
+          <Navigation menuItems={menuItems} path={path} />
         </header>
         <div
           className={`
@@ -195,7 +195,7 @@ const Playlist: React.FC = () => {
           />
         )}
 
-        <Navigation title="Avelino Music" menuItems={menuItems} path={path} />
+        <Navigation menuItems={menuItems} path={path} />
       </div>
     </div>
   )

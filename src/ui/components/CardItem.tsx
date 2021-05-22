@@ -63,7 +63,7 @@ const CardItem: React.FC<CardItemProps> = ({ card, actions, index = 0, isDragDis
                 type="button"
                 onClick={handleClickLeftIcon}
                 className={`
-                mr-1 opacity-70 dark:opacity-30 text-2xl focus:outline-none hover:opacity-100
+                 mr-1 opacity-70 dark:opacity-30 text-2xl focus:outline-none hover:opacity-100
                  transition duration-300 ease-out ${
                    card?.active && card?.leftIconColorWhenActive ? card?.leftIconColorWhenActive : 'text-black dark:text-gray-200'
                  }`}
@@ -74,9 +74,10 @@ const CardItem: React.FC<CardItemProps> = ({ card, actions, index = 0, isDragDis
             <div className="flex flex-row" onClick={handleClick} role="button" aria-hidden="true">
               <img src={card.image.url} title={card.image.title} alt={card.image.alt} className="md:m-4 md:rounded-md w-16 h-16" />
               <div className="flex flex-col justify-center m-3 md:m-0 text-black dark:text-white">
-                <span className="text-md md:text-base font-medium">
+                <span className="text-md md:text-base lg:hidden font-medium">
                   {card.mainText.length > 20 ? card.mainText.slice(0, 20).concat('...') : card.mainText}
                 </span>
+                <span className="hidden lg:block text-base font-medium">{card.mainText}</span>
                 <span className="text-xs md:text-sm mt-1">{card.secondaryText}</span>
               </div>
             </div>
