@@ -1,46 +1,55 @@
-# Getting Started with Create React App
+![Imagem do Favicon](public/images/avelino-music.png "Avelino Music")
+****
+# **Avelino Music**
+### Conecte-se com sua conta do Spotify e monte sua melhor Playlist
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## **O que podemos encontrar por aqui?**
+- [x] Padronização do código:
+  - [x] ESlint
+  - [x] Prettier
+  - [x] Commit customizado
+- [x] Para consumir serviços de terceiros:
+  - [x] Axios (Consumindo serviço do Spotify)
+- [x] No desenvolvimento:
+  - [x] Typescript
+  - [x] ES Next
+  - [x] React
+    - [x] Router - Suspense/Lazy
+    - [x] Hooks
+    - [x] Context API
+    - [x] Reducer
+    - [x] Client (Consumindo serviço do Spotify)
+  - [x] Tailwind CSS
+- [x] Para melhorar a experiência do usuário: 
+  - [x] Theme Dark/Light
+  - [x] Drag and Drop (Permitindo alterar o posicionamento dos itens da lista de resultados)
+  - [x] Layout responsivo
+  - [x] Notificação (Ao favoritar uma música)
+  - [x] Reprodução de aúdio (Ao selecionar uma música)
+  - [x] Armazenamento de informações no Local Storage (Manter a playlist do usuário atualizada)
 
-## Available Scripts
+<br/>
 
-In the project directory, you can run:
+# Telas
 
-### `npm start`
+### **Tela inicial (Sem autenticar)**
+![Tela inicial com botão para autenticação com Spotify](public/gifts/home-not-auth.gif "Autenticar com Spotify")
+****
+### **Tela inicial (Buscando música/album,etc...)**
+![Realizando busca de uma música na tela inicial, ouvindo pŕevia e adicionando na Playlist](public/gifts/home.gif "Busca na tela inicial")
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+***
+### **Tela inicial (Visualizar o TOP 10 de um artista)**
+![Visualizar TOP 10 de um artista após ter realizado a busca](public/gifts/top-tracks.gif "Selecionando artista e exibindo o TOP 10")
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+***
+### **Playlist (Visualizar a  playlist)**
+![Clicando no menu Playlist para visualizar as músicas favoritadas](public/gifts/playlist.gif "Visualizar a Playlist")
 
-### `npm test`
+### **Alterando posição dos itens da Playlist (Dark/Light)**
+![Pressionando o item da Playlist e movendo para baixo e para cima, alterando seu posicionamento](public/gifts/move-itens.gif "Alterando posicionamento dos itens na Playlist")
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+***
+### **Alterando tema (Dark/Light)**
+![Clicando no botão com o ícone de Lua para alterar o tema](public/gifts/playlist.gif "Alterando o tema")
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
