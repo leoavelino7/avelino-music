@@ -8,6 +8,8 @@ import { PlaylistContext } from '../../data/contexts/PlaylistContext'
 
 // Hooks
 import { useAuth } from '../../data/hooks/useAuth'
+import { useAudioPlayer } from '../../data/hooks/useAudioPlayer'
+import { useNotification } from '../../data/hooks/useNotification'
 
 // Actions
 import { Actions as spotifySearchResponseActions } from '../../data/reducers/spotifySearchResponseReducer'
@@ -82,6 +84,7 @@ const convertTrackToCardType = (tracks: Track[], playlistTracks: Track[]): Item[
 
 // Others
 const minCharsQuery = 3
+const favoriteAudio = new Audio('audios/notification-favorite.mp3')
 
 const menuItems = [
   {
@@ -106,6 +109,8 @@ const Home: React.FC = () => {
 
   // Hooks
   const [, signed, signWithSpotify] = useAuth()
+  const [, createNotification] = useNotification()
+  const [audioIsPlaying, resetAudio] = useAudioPlayer()
 
   // States
   const [selectedAudio, setSelectedAudio] = useState<AudioPlayerProps>()
@@ -171,8 +176,39 @@ const Home: React.FC = () => {
     }
   }
 
-  const toggleFavorite = (): void => {
-    console.log('toggleFavorite')
+  const toggleFavorite = (card: Item): void => {
+    const { id: trackId } = card
+
+    if (audioIsPlaying(favoriteAudio)) resetAudio(favoriteAudio)
+
+    const trackFound = playlistState.tracks.find(favoritedTrack => favoritedTrack.id === trackId)
+
+    if (!trackFound) {
+      const newFavoritedTrack = spotifySearchState.tracks.find(track => track.id === trackId)
+
+      if (newFavoritedTrack) {
+        playlistDispatch({
+          type: playlistReducerActions.FAVORITE,
+          payload: {
+            track: {
+              ...newFavoritedTrack,
+              favorited: true
+            }
+          }
+        })
+      }
+
+      createNotification(`Salvo na Playlist: ${newFavoritedTrack?.artistName} - ${newFavoritedTrack?.musicName}`)
+    } else {
+      playlistDispatch({
+        type: playlistReducerActions.UNFAVORITE,
+        payload: {
+          trackId
+        }
+      })
+    }
+
+    favoriteAudio.play()
   }
 
   const onDragEnd = (result: DropResult): void => {
