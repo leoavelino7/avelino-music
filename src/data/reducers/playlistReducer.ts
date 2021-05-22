@@ -54,7 +54,7 @@ export function playlistReducer(state: State, action: Action): State {
       return state
 
     case Actions.UNFAVORITE:
-      if (tracks) {
+      if (trackId) {
         const updatedTracks = state.tracks.filter(oldTrack => oldTrack.id !== trackId)
         window.localStorage.setItem('@app/playlist', JSON.stringify(updatedTracks))
 
