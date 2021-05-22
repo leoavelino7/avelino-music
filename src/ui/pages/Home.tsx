@@ -349,6 +349,17 @@ const Home: React.FC = () => {
                       onDragEnd={onDragEnd}
                       isDragDisabled={false}
                     />
+                    {spotifySearchState.hasMore && (
+                      <button
+                        type="button"
+                        onClick={() => handleSearch(spotifySearchState.query)}
+                        className={`
+                        bg-gray-500 hover:bg-gray-600 text-white text-sm font-bold py-2 px-4 mt-2 border-b-4 
+                        border-gray-700 hover:border-gray-500 rounded mr-5 transition duration-300 ease-out float-right`}
+                      >
+                        Carregar mais
+                      </button>
+                    )}
                   </>
                 )}
               </section>
