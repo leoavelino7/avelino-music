@@ -39,8 +39,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ image, mainText, secondaryTex
         <img src={image.src} title={image.title} alt={image.alt} className="md:m-4 md:rounded-md w-14 h-15" />
         <div className="flex flex-col justify-center m-3 text-black dark:text-white">
           <span className="md:hidden text-sm font-medium">{mainText.length > 15 ? mainText.slice(0, 15).concat('...') : mainText}</span>
-          <span className="hidden md:block text-sm font-medium">{mainText}</span>
-          <span className="text-xs mt-1">{secondaryText}</span>
+          <span className="hidden md:block text-md font-medium">{mainText}</span>
+          <span className="text-sm md:text-md mt-1">{secondaryText}</span>
         </div>
       </div>
       <div className="col-span-3 md:col-span-2 flex justify-center items-center lg:mr-5">

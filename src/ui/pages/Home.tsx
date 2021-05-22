@@ -108,7 +108,7 @@ const Home: React.FC = () => {
   const [, signed, signWithSpotify] = useAuth()
 
   // States
-  const [selectedAudio] = useState<AudioPlayerProps>()
+  const [selectedAudio, setSelectedAudio] = useState<AudioPlayerProps>()
   const [isOpenTopTracks] = useState(false)
   const [queryApproved, setQueryApproved] = useState(true)
   const [titleSearch, setTitleSearch] = useState(STATUS_TITLE.SEARCH_FOR)
@@ -155,8 +155,20 @@ const Home: React.FC = () => {
     console.log('handleSelect')
   }
 
-  const handlePlayPreview = (): void => {
-    console.log('handlePlayPreview')
+  const handlePlayPreview = (card: Item): void => {
+    const selectedTrack = spotifySearchState.tracks.find(track => track.id === card.id)
+
+    if (selectedTrack) {
+      setSelectedAudio({
+        image: {
+          src: selectedTrack.image,
+          title: `${selectedTrack.artistName} - ${selectedTrack.musicName}`
+        },
+        mainText: selectedTrack.musicName,
+        secondaryText: selectedTrack.artistName,
+        audioSrc: selectedTrack.audioPreview
+      })
+    }
   }
 
   const toggleFavorite = (): void => {
