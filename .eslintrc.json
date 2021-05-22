@@ -52,6 +52,7 @@
     "arrow-parens": ["error", "as-needed"],
     "jsx-a11y/media-has-caption": "off",
     "object-curly-newline": "off",
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "no-param-reassign": "warn"
   }
 }
