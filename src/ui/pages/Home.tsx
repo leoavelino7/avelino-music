@@ -280,10 +280,15 @@ const Home: React.FC = () => {
   return (
     <div className="flex flex-col h-screen justify-between">
       <div className="grid grid-rows-3 grid-cols-12 flex-grow">
-        <header className="col-span-2 lg:col-span-3 row-span-3 hidden lg:flex relative  bg-gray-50 dark:bg-black">
+        <header className="col-span-2 lg:col-span-3 xl:col-span-2 row-span-3 hidden lg:flex relative  bg-gray-50 dark:bg-black">
           <Navigation title="Avelino Music" menuItems={menuItems} path={path} />
         </header>
-        <div className="col-span-12 lg:col-span-9 row-span-3 px-3 lg:px-5 bg-white lg:bg-gray-200 dark:bg-black lg:dark:bg-customBlack">
+        <div
+          className={`
+          col-span-12 lg:col-span-9 xl:col-span-10 row-span-3 px-3 
+          lg:px-5 bg-white lg:bg-gray-200 dark:bg-black lg:dark:bg-customBlack
+          `}
+        >
           {!signed && <SignInForm onSubmit={signWithSpotify} />}
 
           {signed && (

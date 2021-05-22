@@ -3,3 +3,34 @@
 @tailwind components;
 
 @tailwind utilities;
+
+::selection {
+  background: #065F46;
+  color: #FFF;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@media screen and (min-width: 768px) {
+  .max-h-result-list {
+    max-height: calc(100vh - 300px);
+  }
+}
