@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
+import { DropResult } from 'react-beautiful-dnd'
 
 // Context
 import { SpotifySearchResponseContext } from '../../data/contexts/SpotifySearchResponseContext'
@@ -162,8 +163,21 @@ const Home: React.FC = () => {
     console.log('toggleFavorite')
   }
 
-  const onDragEnd = (): void => {
-    console.log('onDragEnd')
+  const onDragEnd = (result: DropResult): void => {
+    if (!result.destination) return
+
+    if (result.source.droppableId === result.destination.droppableId && result.source.index === result.destination.index) {
+      return
+    }
+
+    const newResultList = [...resultList]
+
+    const draggedItem = newResultList[result.source.index]
+
+    newResultList.splice(result.source.index, 1)
+    newResultList.splice(result.destination.index, 0, draggedItem)
+
+    setResultList(newResultList)
   }
 
   // Effects
