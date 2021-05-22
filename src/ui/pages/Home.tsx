@@ -1,10 +1,12 @@
 import { useState, useContext, useEffect } from 'react'
 import { DropResult } from 'react-beautiful-dnd'
+import { useRouteMatch } from 'react-router'
 
 // Context
 import { SpotifySearchResponseContext } from '../../data/contexts/SpotifySearchResponseContext'
 import { TopTracksContext } from '../../data/contexts/TopTracksContext'
 import { PlaylistContext } from '../../data/contexts/PlaylistContext'
+import { NavigationContext } from '../../data/contexts/NavigationContext'
 
 // Hooks
 import { useAuth } from '../../data/hooks/useAuth'
@@ -31,8 +33,6 @@ import { Item } from '../components/CardItem'
 import ListCards from '../components/ListCards'
 
 // Icons
-import SearchIcon from '../components/icons/SearchIcon'
-import MusicIcon from '../components/icons/MusicIcon'
 import PlayIcon from '../components/icons/PlayIcon'
 import StartIcon from '../components/icons/StartIcon'
 
@@ -86,31 +86,18 @@ const convertTrackToCardType = (tracks: Track[], playlistTracks: Track[]): Item[
 const minCharsQuery = 3
 const favoriteAudio = new Audio('audios/notification-favorite.mp3')
 
-const menuItems = [
-  {
-    id: '1',
-    text: 'Buscar',
-    path: '/',
-    Icon: SearchIcon
-  },
-  {
-    id: '2',
-    text: 'Minha Playlist',
-    path: '/playlist',
-    Icon: MusicIcon
-  }
-]
-
 const Home: React.FC = () => {
   // Context
   const [spotifySearchState, spotifySearchDispatch] = useContext(SpotifySearchResponseContext)
   const [topTracksState, topTracksDispatch] = useContext(TopTracksContext)
   const [playlistState, playlistDispatch] = useContext(PlaylistContext)
+  const [menuItems] = useContext(NavigationContext)
 
   // Hooks
   const [, signed, signWithSpotify] = useAuth()
   const [, createNotification] = useNotification()
   const [audioIsPlaying, resetAudio] = useAudioPlayer()
+  const { path } = useRouteMatch()
 
   // States
   const [selectedAudio, setSelectedAudio] = useState<AudioPlayerProps>()
@@ -294,7 +281,7 @@ const Home: React.FC = () => {
     <div className="flex flex-col h-screen justify-between">
       <div className="grid grid-rows-3 grid-cols-12 flex-grow">
         <header className="col-span-2 lg:col-span-3 row-span-3 hidden lg:flex relative  bg-gray-50 dark:bg-black">
-          <Navigation title="Avelino Music" menuItems={menuItems} path="/" />
+          <Navigation title="Avelino Music" menuItems={menuItems} path={path} />
         </header>
         <div className="col-span-12 lg:col-span-9 row-span-3 px-3 lg:px-5 bg-white lg:bg-gray-200 dark:bg-black lg:dark:bg-customBlack">
           {!signed && <SignInForm onSubmit={signWithSpotify} />}
@@ -379,7 +366,7 @@ const Home: React.FC = () => {
           />
         )}
 
-        <Navigation title="Avelino Music" menuItems={menuItems} path="/" />
+        <Navigation title="Avelino Music" menuItems={menuItems} path={path} />
       </div>
     </div>
   )
