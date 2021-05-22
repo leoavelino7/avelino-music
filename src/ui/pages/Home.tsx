@@ -3,6 +3,7 @@ import { useState } from 'react'
 // Components
 import Navigation from '../components/Navigation'
 import AudioPlayer, { AudioPlayerProps } from '../components/AudioPlayer'
+import SignInForm from '../components/SignInForm'
 
 // Icons
 import SearchIcon from '../components/icons/SearchIcon'
@@ -25,6 +26,11 @@ const menuItems = [
 
 const Home: React.FC = () => {
   const [selectedAudio] = useState<AudioPlayerProps>()
+  const [signed] = useState(false)
+
+  const signWithSpotify = (): void => {
+    console.log('login')
+  }
 
   return (
     <div className="flex flex-col h-screen justify-between">
@@ -32,7 +38,9 @@ const Home: React.FC = () => {
         <header className="col-span-2 lg:col-span-3 row-span-3 hidden lg:flex relative  bg-gray-50 dark:bg-black">
           <Navigation title="Avelino Music" menuItems={menuItems} path="/" />
         </header>
-        <div className="col-span-12 lg:col-span-9 row-span-3 px-3 lg:px-5 bg-white lg:bg-gray-200 dark:bg-black lg:dark:bg-customBlack" />
+        <div className="col-span-12 lg:col-span-9 row-span-3 px-3 lg:px-5 bg-white lg:bg-gray-200 dark:bg-black lg:dark:bg-customBlack">
+          {!signed && <SignInForm onSubmit={signWithSpotify} />}
+        </div>
       </div>
       <div className="fixed bottom-0 w-full bg-customBlack">
         {selectedAudio && (
